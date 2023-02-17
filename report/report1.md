@@ -176,13 +176,13 @@ and Finite Automata. The received tasks were managed to apply theoretical consid
 Knowledge on Formal Languages is essential in computer science, that's why this
 laboratory work was useful.
 
-Results:
+### Results:
 
 Generating 5 strings method:
 
 ![img_1.png](img_1.png)
 
-Checking if an input string can be obtained via the state transition from it
+Checking if an input string can be obtained via the state transition from it:
 
 ![img.png](img.png)
 
