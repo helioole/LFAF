@@ -85,9 +85,6 @@ The first method, `generateString()`, takes a symbol as input and returns a stri
 
 The second method, `printString()`, simply calls `generateString` with the start symbol as input and returns the resulting string.
 
-Result:
-
-![img_1.png](img_1.png)
 
 3. Implementing a method that would convert an object of type Grammar to one of type Finite Automaton
 
@@ -160,7 +157,6 @@ the `next_states` list for the next iteration.
 After processing all characters in the input string, 
 the method returns `True` if the current state is a final state.
 
-Result:
 ```
 fa = grammar.toFA()
 
@@ -173,13 +169,23 @@ print('The input string is ' + input_string2 + '. Is it accepted?')
 print(fa.accept(input_string2))  # Output: True
 ```
 
-![img.png](img.png)
 
 ## Conclusion
 In this laboratory work I have studied what is a formal language, Grammar
 and Finite Automata. The received tasks were managed to apply theoretical considerations in practice.
 Knowledge on Formal Languages is essential in computer science, that's why this
 laboratory work was useful.
+
+Results:
+
+Generating 5 strings method:
+
+![img_1.png](img_1.png)
+
+Checking if an input string can be obtained via the state transition from it
+
+![img.png](img.png)
+
 
 ## References:
 https://else.fcim.utm.md/pluginfile.php/110458/mod_resource/content/0/LFPC_Guide.pdf
