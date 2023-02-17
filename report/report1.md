@@ -17,6 +17,7 @@ where:
 
 Using the productions(rules), we can generate words of a language.
 For instance, we'll take:
+```
 VN={S, A, C, D}
 VT={a, b},
 P={
@@ -28,6 +29,7 @@ C → a
 C → bA   
 D → aD
 }
+```
 The generated word will be:
 `S -> aA -> abD -> abbC -> abba`
 
@@ -51,8 +53,9 @@ c. Implement some functionality that would convert and object of type Grammar to
 d. For the Finite Automaton, please add a method that checks if an input string can be obtained via the state transition from it;
 
 ## Implementation description
-1. Implement a type/class for your grammar
+1. Implementing a type/class for your grammar
 In order to do this task, I simply had to take in consideration the theory mentioned before, so the `Grammar` class will look like this:
+```
 class Grammar:
     def init(self, startSymbol, nonTerminal, terminals,
                  productions, final):
@@ -61,7 +64,9 @@ class Grammar:
         self.nonTerminal = nonTerminal
         self.productions = productions
         self.final = final
-2.  Add one function that would generate 5 valid strings from the language expressed by your given grammar
+```
+2.  Adding one function that would generate 5 valid strings from the language expressed by the given grammar
+```
     def generateString(self, symbol: str) -> str:
         string = ''
         if symbol not in self.terminals:
@@ -75,6 +80,7 @@ class Grammar:
 
     def printString(self) -> str:
         return self.generateString(self.startSymbol)
+```
 The first method, `generateString()`, takes a symbol as input and returns a string of characters by recursively selecting a random production rule for non-terminal symbols until only terminal symbols remain.
 
 The second method, `printString()`, simply calls `generateString` with the start symbol as input and returns the resulting string.
@@ -83,16 +89,18 @@ Result:
 
 ![img_1.png](img_1.png)
 
-3. Implement some functionality that would convert an object of type Grammar to one of type Finite Automaton
+3. Implementing a method that would convert an object of type Grammar to one of type Finite Automaton
 
 For every regular grammar can be obtained equivalent finite
 automaton. So, there will be:
 
+```
 G(Vn, Vt, P, S) => (Q, Σ, δ, q0, F) 
 Q = Vn
 Σ = Vt
 q0 = S
 δ = P
+```
 Firstly, I made a method to convert productions to transitions:
 ```
     def PtoT(self):
@@ -124,7 +132,7 @@ Next, I used this method in order to convert Grammar to Finite Automata:
             finite_automaton = FiniteAutomaton(alphabet, states, start_state, transitions, final_state)
             return finite_automaton
 ```
-4. For the Finite Automaton, please add a method that checks if an input string can be obtained via the state transition from it
+4. Adding a method that checks if an input string can be obtained via the state transition from it
 ```    
     def accept(self, input_string: str) -> bool:
         states = [self.start_state]
