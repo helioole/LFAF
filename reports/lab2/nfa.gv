@@ -1,0 +1,17 @@
+digraph NFA {
+	q0
+	q1
+	q2
+	node [shape=none]
+	"" -> q0 [arrowhead=normal]
+	node [shape=doublecircle]
+	q2 [shape=doublecircle]
+	node [shape=circle]
+	edge [arrowhead=normal]
+	q0 -> q0 [label=b]
+	q0 -> q1 [label=b]
+	q1 -> q2 [label=b]
+	q0 -> q0 [label=a]
+	q2 -> q2 [label=a]
+	q1 -> q1 [label=a]
+}
