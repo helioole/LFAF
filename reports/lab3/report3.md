@@ -216,6 +216,9 @@ function gcd(a, b) }
 The output:
 
 ```commandline
+Traceback (most recent call last):
+  File "C:\Users\User\Desktop\lfaf\LFAF3\main.py", line 31, in <module>
+    output2 = lexer.tokenize(wrong1)
   File "C:\Users\User\Desktop\lfaf\LFAF3\lexer\lexer.py", line 44, in tokenize
     raise SyntaxError(f'Invalid syntax: {token_value}')
 SyntaxError: Invalid syntax: ('WHITESPACE', '\n\n ')
