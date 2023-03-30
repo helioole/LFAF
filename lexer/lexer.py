@@ -4,7 +4,7 @@ import re
 
 class Lexer:
     def __init__(self):
-        self.token_patterns = [Tokens(name, pattern) for name, pattern in Tokens.patterns.items()]
+        self.token_patterns = [Tokens(name, pattern) for name, pattern in Tokens.token_patterns.items()]
 
     def tokenize(self, inputs):
         global token_value

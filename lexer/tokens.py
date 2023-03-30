@@ -1,6 +1,6 @@
 
 class Tokens:
-    patterns = {
+    token_patterns = {
         'FUNCTION': r'function',
         'NUMBER': r'\d+(\.\d+)?',
         'STRING': r'"[^"]*"',
@@ -31,9 +31,7 @@ class Tokens:
         'CONTINUE': r'continue',
         'VARIABLE_DECLARATION': r'var',
         'WHITESPACE': r'\s+',
-        'NAME': r'[a-zA-Z_]\w*',
-        'NAME1': r'[a-z]\w*' + r'()',
-        'COMMENT': r'//.*'
+        'IDENTIFIER': r'[a-zA-Z_]\w*'
     }
 
     def __init__(self, name, pattern):
