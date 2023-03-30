@@ -1,20 +1,29 @@
 # Topic: Lexer & Scanner
 ## Course: Formal Languages & Finite Automata
 ### Author: Racovcena Irina
-### Variant: 24
 ____
 ## Theory Notations
-**What is a Lexer?**
+### What is a Lexer?
 
 Lexers are commonly used in compilers, interpreters, and other programs that need to analyze or manipulate textual data.
 It is basically a program or a software component that analyzes a sequence of characters in a text to produce a sequence 
-of tokens (or lexemes) that can be used further. 
+of tokens (or lexemes) that can be used further.
+
+Lexers typically use regular expressions and finite automata to recognize and classify tokens. Regular expressions are patterns that define the structure of the lexemes in the language, while finite automata are state machines that can recognize those patterns.
+
+The lexer usually works in a two-pass process. In the first pass, 
+it identifies all the tokens in the input text and builds a symbol table, 
+which is a data structure that stores information about each token, such as its 
+type and location in the source code. In the second pass, the symbol table is used 
+to generate intermediate code or machine code.
+
+### What is Lexer used for?
 
 The main task of a lexer is to take the input text and break it down into a stream of tokens that can be used by the parser. Each token represents a unit of meaning in the text, 
 such as a keyword, an identifier, a number, a symbol, or a string literal.
 
-The lexer reads the input text character by character and groups them into tokens based on predefined rules and regular expressions. 
-It then outputs the tokens as a stream of structured data that can be easily processed.
+The lexer plays a crucial role in the compilation process by breaking down the input text into 
+manageable units that can be further processed by the compiler or interpreter.
 
 ## Objectives:
 1. Understand what lexical analysis [1] is.
@@ -107,28 +116,10 @@ consisting of the token name and the matched string,
 which is then appended to a list of tokens stored in the variable `tokens`.
 
 If the matched token is a whitespace, it is ignored, and 
-the program moves on to the next iteration. Otherwise, it is appended to the tokens list, and the input string is updated.
+the program moves on to the next iteration. Otherwise, it is appended to the tokens list, and the input string is updated
+by excluding the matched substring using slicing.
 
 If no match is found, the program raises a SyntaxError.
-
-Also, I decided to put one more condition for the source code conditions:
-
-```commandline
-        if ((leftb in tokens) or (rightb in tokens)) \
-                and ((tokens.index(leftb) > tokens.index(rightb))
-                     or (lbrace_count != rbrace_count)):
-            raise SyntaxError(f'Invalid syntax: {token_value}')
-
-        elif ((leftp in tokens) or (rightp in tokens)) \
-                and ((tokens.index(leftp) > tokens.index(rightp))
-                     or (lparen_count != rparen_count)):
-            raise SyntaxError(f'Invalid syntax: {token_value}')
-```
-
-This part of tokenize() method is build to check whether the number of
-right and left braces and parenthesis in the source code are equal and if the left
-ones always appear before the right ones. If it's not the case, the program will give
-SyntaxError:
 
 ## Conclusion
 
@@ -166,64 +157,10 @@ function gcd(a, b) {
 
 The output:
 
-```commandline
-('FUNCTION', 'function')
-('IDENTIFIER', 'gcd')
-('LEFT_PAREN', '(')
-('IDENTIFIER', 'a')
-('COMMA', ',')
-('IDENTIFIER', 'b')
-('RIGHT_PAREN', ')')
-('LEFT_BRACE', '{')
-('IF', 'if')
-('IDENTIFIER', 'b')
-('ASSIGN', '=')
-('ASSIGN', '=')
-('NUMBER', '0')
-('LEFT_BRACE', '{')
-('RETURN', 'return')
-('IDENTIFIER', 'a')
-('END', ';')
-('ELSE', 'else')
-('LEFT_BRACE', '{')
-('RETURN', 'return')
-('IDENTIFIER', 'gcd')
-('LEFT_PAREN', '(')
-('IDENTIFIER', 'b')
-('COMMA', ',')
-('IDENTIFIER', 'a')
-('MODULUS', '%')
-('IDENTIFIER', 'b')
-('RIGHT_PAREN', ')')
-('END', ';')
-('RIGHT_BRACE', '}')
-('RIGHT_BRACE', '}')
-('RIGHT_BRACE', '}')
-```
+![img.png](images/img.png)
 
 The second input:
 
-```commandline
-function gcd(a, b) }
-    if b == 0{
-        return a;
-    else {
-        return gcd(b, a % b);
-    }
-    }
-```
-
-The output:
-
-```commandline
-Traceback (most recent call last):
-  File "C:\Users\User\Desktop\lfaf\LFAF3\main.py", line 31, in <module>
-    output2 = lexer.tokenize(wrong1)
-  File "C:\Users\User\Desktop\lfaf\LFAF3\lexer\lexer.py", line 44, in tokenize
-    raise SyntaxError(f'Invalid syntax: {token_value}')
-SyntaxError: Invalid syntax: ('WHITESPACE', '\n\n ')
-```
-The third input:
 ```commandline
 function gcd(a, b) {
     if b! == 0{
@@ -237,12 +174,24 @@ function gcd(a, b) {
 
 The output:
 
+![img2.png](img2.png)
+
+It gave an error because there's no such token that would allow typing `b!`.
+
+The third input:
 ```commandline
-Traceback (most recent call last):
-  File "C:\Users\User\Desktop\lfaf\LFAF3\main.py", line 46, in <module>
-    output3 = lexer.tokenize(wrong2)
-  File "C:\Users\User\Desktop\lfaf\LFAF3\lexer\lexer.py", line 34, in tokenize
-    raise SyntaxError(f'Invalid syntax: {token_value}')
-SyntaxError: Invalid syntax: ('IDENTIFIER', 'b')
+function gcd(a, b) {
+    if b == 0{
+        return a;
+    else {
+        return gcd(b, a # b);
+    }
+    }
+    }
 ```
 
+The output:
+
+![img_1.png](img_1.png)
+
+It gave an error because there's no such token as `#`.

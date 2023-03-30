@@ -18,8 +18,8 @@ for token in output1:
     print(token)
 
 wrong1 = '''
-function gcd(a, b) }
-    if b == 0{
+function gcd(a, b) {
+    if b! == 0{
         return a;
     else {
         return gcd(b, a % b);
@@ -34,10 +34,10 @@ for token in output2:
 
 wrong2 = '''
 function gcd(a, b) {
-    if b! == 0{
+    if b == 0{
         return a;
     else {
-        return gcd(b, a % b);
+        return gcd(b, a # b);
     }
     }
     }
