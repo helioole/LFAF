@@ -157,7 +157,39 @@ function gcd(a, b) {
 
 The output:
 
-![img.png](images%2Fimg.png)
+```commandline
+('FUNCTION', 'function')
+('IDENTIFIER', 'gcd')
+('LEFT_PAREN', '(')
+('IDENTIFIER', 'a')
+('COMMA', ',')
+('IDENTIFIER', 'b')
+('RIGHT_PAREN', ')')
+('LEFT_BRACE', '{')
+('IF', 'if')
+('IDENTIFIER', 'b')
+('EQUAL', '==')
+('NUMBER', '0')
+('LEFT_BRACE', '{')
+('RETURN', 'return')
+('IDENTIFIER', 'a')
+('END', ';')
+('ELSE', 'else')
+('LEFT_BRACE', '{')
+('RETURN', 'return')
+('IDENTIFIER', 'gcd')
+('LEFT_PAREN', '(')
+('IDENTIFIER', 'b')
+('COMMA', ',')
+('IDENTIFIER', 'a')
+('MODULUS', '%')
+('IDENTIFIER', 'b')
+('RIGHT_PAREN', ')')
+('END', ';')
+('RIGHT_BRACE', '}')
+('RIGHT_BRACE', '}')
+('RIGHT_BRACE', '}')
+```
 
 The second input:
 
