@@ -157,7 +157,7 @@ function gcd(a, b) {
 
 The output:
 
-![img.png](images/img.png)
+![img.png](images%2Fimg.png)
 
 The second input:
 
