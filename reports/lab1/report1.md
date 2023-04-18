@@ -180,11 +180,11 @@ laboratory work was useful.
 
 Generating 5 strings method:
 
-![img_1.png](images/img_1.png)
+![img_1.png](../images/img_1.png)
 
 Checking if an input string can be obtained via the state transition from it:
 
-![img.png](images/img.png)
+![img.png](../images/img.png)
 
 
 ## References:

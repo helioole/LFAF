@@ -250,15 +250,15 @@ non-deterministic automata is essential for designing algorithms
 that can process languages efficiently.
 
 ## Results
-![img_2.png](images/img_2.png)
+![img_2.png](../images/img_2.png)
 
 The given finite automata representation:
 
-![nfa.png](images/nfa.png)
+![nfa.png](../images/nfa.png)
 
 The converted NFA to DFA:
 
-![dfa.png](images/dfa.png)
+![dfa.png](../images/dfa.png)
 
 
 

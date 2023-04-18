@@ -206,7 +206,7 @@ function gcd(a, b) {
 
 The output:
 
-![img2.png](images/img2.png)
+![img2.png](../images/img2.png)
 
 It gave an error because there's no such token that would allow typing `b!`.
 
@@ -224,6 +224,6 @@ function gcd(a, b) {
 
 The output:
 
-![img_1.png](images/img_1.png)
+![img_1.png](../images/img_3.png)
 
 It gave an error because there's no such token as `#`.

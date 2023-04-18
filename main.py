@@ -1,49 +1,14 @@
-from lexer.lexer import Lexer
+from grammar.ChomskyNormalForm import Chomsky
 
-correct = '''
-function gcd(a, b) {
-    if b == 0{
-        return a;
-    else {
-        return gcd(b, a % b);
-    }
-    }
-    }
+chomsky = Chomsky('S',
+['S', 'A', 'B', 'C'],
+['a', 'd'],
+{
+'S': ["dB", "A"],
+'A': ["d", "dS", "aBdAB"],
+'B': ["a", "dA", "A", "ε"],
+'C': ["Aa"]
+})
 
- '''
-
-lexer = Lexer()
-output1 = lexer.tokenize(correct)
-for token in output1:
-    print(token)
-
-wrong1 = '''
-function gcd(a, b) {
-    if b! == 0{
-        return a;
-    else {
-        return gcd(b, a % b);
-    }
-    }
-
- '''
-
-output2 = lexer.tokenize(wrong1)
-for token in output2:
-    print(token)
-
-wrong2 = '''
-function gcd(a, b) {
-    if b == 0{
-        return a;
-    else {
-        return gcd(b, a # b);
-    }
-    }
-    }
-'''
-
-output3 = lexer.tokenize(wrong2)
-for token in output3:
-    print(token)
-
+chomsky.cfg_to_cnf()
+chomsky.print_grammar()
