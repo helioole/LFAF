@@ -184,7 +184,7 @@ Generating 5 strings method:
 
 Checking if an input string can be obtained via the state transition from it:
 
-![img.png](../images/img4.png)
+![img.png](../images/img.png)
 
 
 ## References:
