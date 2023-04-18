@@ -29,3 +29,6 @@ F = {q2},
 δ(q2,a) = q2,
 δ(q1,a) = q1.
 ```
+
+### Lab4
+![img.png](reports/images/img4.png)
