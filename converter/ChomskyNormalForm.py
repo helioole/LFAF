@@ -5,7 +5,9 @@ class Chomsky:
         self.nonTerminal = nonTerminal
         self.terminals = terminals
         self.productions = productions
-
+        self.count = 0
+        self.new_productions = {}
+        self.new_prod_lookup = {}
 
     def eliminate_epsilon_productions(self):
         nullables = set()
@@ -93,55 +95,83 @@ class Chomsky:
 
         self.nonTerminal = sorted(list(productive))
 
+    def convert(self):
+        keys = list(self.productions.keys())
+        for vt in self.terminals:
+            new_symbol = self.new_lp()
+            self.add_production(new_symbol, vt)
+            self.nonTerminal.append(new_symbol)
 
-    def to_cnf(self):
-        new_productions = {}
-        next_new_var = 1
-        terminal_var_map = {}
+            for lhs in keys:
+                rhs = self.productions[lhs]
 
-        for var, prods in self.productions.items():
-            new_productions[var] = []
+                for i in range(len(rhs)):
+                    if len(rhs[i]) > 1:
+                        old_production = rhs[i]
+                        new_production = old_production.replace(vt, new_symbol)
+                        rhs[i] = new_production
 
-            for prod in prods:
-                if len(prod) >= 3:
-                    prod_vars = [f"X{next_new_var + i}" for i in range(len(prod) - 1)]
-                    next_new_var += len(prod) - 1
-                    self.nonTerminal.extend(prod_vars)
+                self.productions[lhs] = rhs
 
-                    new_productions[var].append(prod[0] + prod_vars[0])
-                    for i in range(len(prod) - 2):
-                        new_var = prod_vars[i]
-                        new_productions.setdefault(new_var, [])
-                        new_productions[new_var].append(prod[i + 1] + prod_vars[i + 1])
-                    new_productions.setdefault(prod_vars[-1], [])
-                    new_productions[prod_vars[-1]].append(prod[-1])
+    def new_lp(self):
+        self.count += 1
+        return "X" + str(self.count - 1)
 
-                elif len(prod) == 2 and all(sym in self.nonTerminal for sym in prod):
-                    new_productions[var].append(prod)
+    def add_production(self, lhs, rhs):
+        if lhs in self.productions:
+            self.productions[lhs].append(rhs)
+        else:
+            self.productions[lhs] = [rhs]
+
+    def new_prod(self):
+        for key in self.productions.keys():
+            values = self.productions[key]
+            values = list(map(self.form_prod, values))
+            self.productions[key] = values
+
+        for key, values in self.new_productions.items():
+            self.productions[key] = values
+
+    def form_prod(self, prod):
+        upper_count = sum(1 for c in prod if c.isupper())
+        while upper_count > 2:
+            append = 0
+            new_group = ""
+            i = 0
+            while i < len(prod):
+                if append < 2:
+                    if prod[i] == 'X':
+                        append += 1
+                        new_group += prod[i:i + 2]
+                        i += 2
+                    else:
+                        append += 1
+                        new_group += prod[i:i + 1]
+                        i += 1
 
                 else:
-                    new_prod = prod
-                    for sym in prod:
-                        if sym in self.terminals:
-                            if sym not in terminal_var_map:
-                                new_var = f"T{next_new_var}"
-                                next_new_var += 1
-                                self.nonTerminal.append(new_var)
-                                new_productions.setdefault(new_var, [])
-                                new_productions[new_var].append(sym)
-                                terminal_var_map[sym] = new_var
-                            new_prod = new_prod.replace(sym, terminal_var_map[sym], 1)
-                    new_productions[var].append(new_prod)
+                    break
 
-        self.productions = new_productions
-        self.nonTerminal = sorted(list(set(self.nonTerminal)))
+            if self.new_prod_lookup.get(new_group):
+                prod = prod.replace(new_group, self.new_prod_lookup[new_group])
+            else:
+                new_symbol = self.new_lp()
+                self.new_productions[new_symbol] = [new_group]
+                self.new_prod_lookup[new_group] = new_symbol
+                self.nonTerminal.append(new_symbol)
+                prod = prod.replace(new_group, new_symbol)
+
+            upper_count = sum(1 for c in prod if c.isupper())
+
+        return prod
 
     def cfg_to_cnf(self):
         self.eliminate_epsilon_productions()
         self.eliminate_unit_productions()
         self.eliminate_inaccessible_symbols()
         self.eliminate_nonproductive()
-        self.to_cnf()
+        self.convert()
+        self.new_prod()
         return self
 
     def print_grammar(self):

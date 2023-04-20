@@ -161,5 +161,159 @@ This method is used to eliminate nonproductive variables from the grammar which 
 
 After all non-productive symbols are removed from productive, the method finds the set of non-productive symbols by subtracting productive from the set of all non-terminals. It removes all productions with non-productive symbols from the grammar and removes all productions that contain symbols that are not in productive or are not terminals. Finally, the method updates the set of non-terminals with the productive symbols and returns the modified grammar.
 
+5. Converting to Chomsky Normal Form
+
+Convert function:
+```commandline
+    def convert(self):
+        keys = list(self.productions.keys())
+        for vt in self.terminals:
+            new_symbol = self.new_lp()
+            self.add_production(new_symbol, vt)
+            self.nonTerminal.append(new_symbol)
+
+            for lhs in keys:
+                rhs = self.productions[lhs]
+
+                for i in range(len(rhs)):
+                    if len(rhs[i]) > 1:
+                        old_production = rhs[i]
+                        new_production = old_production.replace(vt, new_symbol)
+                        rhs[i] = new_production
+
+                self.productions[lhs] = rhs
+```
+
+Helper functions:
+```commandline
+    def new_prod(self):
+        for key in self.productions.keys():
+            values = self.productions[key]
+            values = list(map(self.form_prod, values))
+            self.productions[key] = values
+
+        for key, values in self.new_productions.items():
+            self.productions[key] = values
+
+    def form_prod(self, prod):
+        upper_count = sum(1 for c in prod if c.isupper())
+        while upper_count > 2:
+            append = 0
+            new_group = ""
+            i = 0
+            while i < len(prod):
+                if append < 2:
+                    if prod[i] == 'X':
+                        append += 1
+                        new_group += prod[i:i + 2]
+                        i += 2
+                    else:
+                        append += 1
+                        new_group += prod[i:i + 1]
+                        i += 1
+
+                else:
+                    break
+
+            if self.new_prod_lookup.get(new_group):
+                prod = prod.replace(new_group, self.new_prod_lookup[new_group])
+            else:
+                new_symbol = self.new_lp()
+                self.new_productions[new_symbol] = [new_group]
+                self.new_prod_lookup[new_group] = new_symbol
+                self.nonTerminal.append(new_symbol)
+                prod = prod.replace(new_group, new_symbol)
+
+            upper_count = sum(1 for c in prod if c.isupper())
+
+        return prod
+```
+The `convert()` method first iterates over each terminal symbol in the grammar, creating a new non-terminal symbol to replace each terminal symbol using the `new_lp()` method. It then adds a 
+new production rule to the grammar that maps the new non-terminal symbol to the original terminal symbol using 
+the `add_production()` method. The `convert()` method also adds the new non-terminal symbol to the set of non-terminal 
+symbols in the grammar.
+
+Next, the `convert()` method iterates over each production rule in the grammar and replaces any occurrences of the current 
+terminal symbol with the new non-terminal symbol using the `replace()` method. This is done to ensure that all production rules in 
+the grammar which corresponds to requirements for CNF.
+
+The `convert()` method calls the `new_prod()` method to further modify the grammar into CNF. The `new_prod()` method first applies 
+a helper function called `form_prod()` to each production rule in the grammar to ensure that each production rule contains 
+at most two non-terminal symbols. The `form_prod()` method replaces any groups of three or more non-terminal symbols with new non-terminal symbols.
+
+Finally, the `new_prod()` method adds the new production rules created by the `form_prod()` method to the grammar and updates the 
+existing production rules to contain only two non-terminal symbols.
+
+Then we have to gather all the necessary method for the conversion which looks like this:
+```commandline
+    def cfg_to_cnf(self):
+        self.eliminate_epsilon_productions()
+        self.eliminate_unit_productions()
+        self.eliminate_inaccessible_symbols()
+        self.eliminate_nonproductive()
+        self.convert()
+        self.new_prod()
+        return self
+```
+
+## Conclusion
+
+In conclusion, converting a context-free grammar to Chomsky normal form is an essential step in formal language theory, 
+and it requires careful attention to detail and a solid understanding of the underlying concepts. The process involves 
+several steps, such as eliminating non-productive and unreachable symbols, removing ε-productions, and replacing all 
+remaining rules with two non-terminal symbols or a single terminal symbol. By converting a context-free grammar to Chomsky 
+normal form, we can simplify the grammar and make it easier to analyze. 
+
+This laboratory work has provided an opportunity to 
+practice the process of converting a context-free grammar to Chomsky normal form and to deepen our understanding of formal 
+language theory. Overall, this laboratory work has been a valuable learning experience that has helped to improve our skills 
+and knowledge in the field of formal language theory.
+
+## Results
+```commandline
+Original Context Free Grammar:
+S -> dB | A
+A -> d | dS | aBdAB
+B -> a | dA | A | ε
+C -> Aa
 
 
+After eliminating epsilon productions:
+S -> d | dB | A
+A -> d | dS | adA | aBdAB | adAB | aBdA
+B -> a | dA | A
+C -> Aa
+
+
+After eliminating unit productions:
+S -> d | dB | dS | adA | aBdAB | adAB | aBdA
+A -> d | dS | adA | aBdAB | adAB | aBdA
+B -> a | dA | d | dS | adA | aBdAB | adAB | aBdA
+C -> Aa
+
+
+After eliminating inaccessible symbols:
+S -> d | dB | dS | adA | aBdAB | adAB | aBdA
+A -> d | dS | adA | aBdAB | adAB | aBdA
+B -> a | dA | d | dS | adA | aBdAB | adAB | aBdA
+
+
+After eliminating non-productive productions:
+S -> d | dB | dS | adA | aBdAB | adAB | aBdA
+A -> d | dS | adA | aBdAB | adAB | aBdA
+B -> a | dA | d | dS | adA | aBdAB | adAB | aBdA
+
+
+Chomsky Normal Form:
+S -> d | X1B | X1S | X2A | X5B | X6B | X4A
+A -> d | X1S | X2A | X5B | X6B | X4A
+B -> a | X1A | d | X1S | X2A | X5B | X6B | X4A
+X0 -> a
+X1 -> d
+X2 -> X0X1
+X3 -> X0B
+X4 -> X3X1
+X5 -> X4A
+X6 -> X2A
+
+```

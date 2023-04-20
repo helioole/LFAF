@@ -1,5 +1,5 @@
 import unittest
-from grammar.ChomskyNormalForm import Chomsky
+from converter.ChomskyNormalForm import Chomsky
 
 
 
