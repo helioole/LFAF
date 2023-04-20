@@ -45,7 +45,7 @@ After applying these four transformations, the context-free grammar will be in C
 
 1. Eliminating epsilon productions 
 
-```
+```python
     def eliminate_epsilon_productions(self):
         nullables = set()
         for variable, productions in self.productions.items():
@@ -82,17 +82,17 @@ After applying these four transformations, the context-free grammar will be in C
         self.productions = {k: v for k, v in new_productions.items() if v}
 ```
 
-The first loop of the method identifies all nullable variables (variables that can produce an empty string). It does so by iterating through all productions in the grammar and adding any variables that produce an epsilon (represented by `ε`) to the nullables set.
+First we identify all nullable variables (variables that can produce an empty string). It does so by iterating through all productions in the grammar and adding any variables that produce an epsilon (represented by `ε`) to the nullables set.
 
-The second loop creates new productions that do not include epsilon productions. It does so by iterating through all productions in the grammar and generating all possible combinations of removing nullable variables from the production. The resulting non-epsilon productions are added to the new_productions dictionary.
+Then is new productions turn that do not include epsilon productions. It does so by iterating through all productions in the grammar and generating all possible combinations of removing nullable variables from the production. The resulting non-epsilon productions are added to the `new_productions` dictionary.
 
-The third loop removes any remaining epsilon productions that may have been generated in the previous loop. It does so by iterating through all non-epsilon productions and generating new productions by removing each nullable variable from the production. The resulting non-epsilon productions are added to the new_productions dictionary.
+Later, we remove any remaining epsilon productions that may have been generated in the previous loop.
 
-Finally, any variables that have no productions left after the previous loops are removed from the `new_productions` dictionary. The resulting `new_productions` dictionary is then assigned to the productions attribute of the grammar.
+In the end, any variables that have no productions left after the previous loops are removed from the `new_productions` dictionary. The resulting `new_productions` dictionary is then assigned to the productions attribute of the grammar.
 
 2. Eliminating unit productions
 
-```commandline
+```python
     def eliminate_unit_productions(self):
         for symbol in self.productions:
             unit_productions = [prod for prod in self.productions[symbol] if len(prod) == 1 and prod.isupper()]
@@ -109,7 +109,7 @@ For each unit production, the method removes the unit production from the produc
 After the method has processed all unit productions for all symbols in the grammar, the grammar no longer contains any unit productions.
 
 3. Eliminating inaccessible productions
-```
+```python
     def eliminate_inaccessible_symbols(self):
         def visit(symbol, visited):
             if symbol not in visited:
@@ -130,7 +130,7 @@ This method eliminates inaccessible non-terminal symbols from a grammar. It star
 
 4. Eliminating non-productive productions
 
-```commandline
+```python
     def eliminate_nonproductive(self):
         productive = {self.startSymbol}
         old_productive = set()
@@ -164,7 +164,7 @@ After all non-productive symbols are removed from productive, the method finds t
 5. Converting to Chomsky Normal Form
 
 Convert function:
-```commandline
+```python
     def convert(self):
         keys = list(self.productions.keys())
         for vt in self.terminals:
@@ -185,7 +185,7 @@ Convert function:
 ```
 
 Helper functions:
-```commandline
+```python
     def new_prod(self):
         for key in self.productions.keys():
             values = self.productions[key]
@@ -241,11 +241,11 @@ The `convert()` method calls the `new_prod()` method to further modify the gramm
 a helper function called `form_prod()` to each production rule in the grammar to ensure that each production rule contains 
 at most two non-terminal symbols. The `form_prod()` method replaces any groups of three or more non-terminal symbols with new non-terminal symbols.
 
-Finally, the `new_prod()` method adds the new production rules created by the `form_prod()` method to the grammar and updates the 
+The `new_prod()` method adds the new production rules created by the `form_prod()` method to the grammar and updates the 
 existing production rules to contain only two non-terminal symbols.
 
 Then we have to gather all the necessary method for the conversion which looks like this:
-```commandline
+```python
     def cfg_to_cnf(self):
         self.eliminate_epsilon_productions()
         self.eliminate_unit_productions()
