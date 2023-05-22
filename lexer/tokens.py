@@ -1,40 +1,35 @@
-
+from parsing.type import TokenType
 class Tokens:
     token_patterns = {
-        'FUNCTION': r'function',
-        'NUMBER': r'\d+(\.\d+)?',
-        'STRING': r'"[^"]*"',
-        'LEFT_PAREN': r'\(',
-        'RIGHT_PAREN': r'\)',
-        'LEFT_BRACE': r'\{',
-        'RIGHT_BRACE': r'\}',
-        'COMMA': r',',
-        'EQUAL': r'==',
-        'ASSIGN': r'=',
-        'END': r';',
-        'PLUS': r'\+',
-        'MINUS': r'\-',
-        'MULTIPLY': r'\*',
-        'DIVIDE': r'\/',
-        'MODULUS': r'\%',
-        'GREATER': r'>',
-        'GREATER_EQUAL': r'>=',
-        'LESS': r'<',
-        'LESS_EQUAL': r'<=',
-        'NOT_EQUAL': r'!=',
-        'IF': r'if',
-        'ELSE': r'else',
-        'WHILE': r'while',
-        'FOR': r'for',
-        'RETURN': r'return',
-        'BREAK': r'break',
-        'CONTINUE': r'continue',
-        'VARIABLE_DECLARATION': r'var',
-        'WHITESPACE': r'\s+',
-        'IDENTIFIER': r'[a-zA-Z_]\w*'
+        TokenType.LPAREN: r'\(',
+        TokenType.RPAREN: r'\)',
+        TokenType.LBRACE: r'\{',
+        TokenType.RBRACE: r'\}',
+        TokenType.COMMA: r',',
+        TokenType.ASSIGN_EQUAL: r'=',
+        TokenType.SEMICOLON: r';',
+        TokenType.PLUS: r'\+',
+        TokenType.MINUS: r'\-',
+        TokenType.MULTIPLY: r'\*',
+        TokenType.DIVIDE: r'\/',
+        TokenType.MODULUS: r'\%',
+        TokenType.GREATER: r'>',
+        TokenType.LESS: r'<',
+        TokenType.NOT_EQUAL: r'!=',
+        TokenType.IF: r'if',
+        TokenType.ELSE: r'else',
+        TokenType.FOR: r'for',
+        TokenType.RETURN: r'return',
+        TokenType.BREAK: r'break',
+        TokenType.VAR: r'var',
+        TokenType.FUNCTION: r'function',
+        TokenType.ID: r'[a-zA-Z_]\w*',
+        TokenType.NUMBER: r'\d+(\.\d+)?',
+        TokenType.STRING: r'"[^"]*"',
+        TokenType.WHITESPACE: r'\s+',
+        TokenType.COMMENT: r'\/\/.*'
     }
 
     def __init__(self, name, pattern):
         self.name = name
         self.pattern = pattern
-

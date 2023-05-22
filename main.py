@@ -1,42 +1,25 @@
-from converter.ChomskyNormalForm import Chomsky
+from lexer.Lexer import Lexer
+from parsing.Parser import Parser
 
 def main():
-    chomsky = Chomsky('S',
-    ['S', 'A', 'B', 'C'],
-    ['a', 'd'],
-    {
-    'S': ["dB", "A"],
-    'A': ["d", "dS", "aBdAB"],
-    'B': ["a", "dA", "A", "ε"],
-    'C': ["Aa"]
-    })
+    input_string = '''
+        function gcd(a, b) {
+            if (b = 0) {
+                return a;
+            }
+            else {
+                return gcd(b, a % b);
+            }
+        }
+    '''
 
-    print("Original Context Free Grammar:")
-    chomsky.print_grammar()
-    print("\n")
+    lexer = Lexer()
+    tokens = lexer.tokenize(input_string)
 
-    print("After eliminating epsilon productions:")
-    chomsky.eliminate_epsilon_productions()
-    chomsky.print_grammar()
-    print("\n")
+    parser = Parser()
+    ast = parser.parse(tokens)
+    ast.visualize()
 
-    print("After eliminating unit productions:")
-    chomsky.eliminate_unit_productions()
-    chomsky.print_grammar()
-    print("\n")
+if __name__ == "__main__":
+    main()
 
-    print("After eliminating inaccessible symbols:")
-    chomsky.eliminate_inaccessible_symbols()
-    chomsky.print_grammar()
-    print("\n")
-
-    print("After eliminating non-productive productions:")
-    chomsky.eliminate_nonproductive()
-    chomsky.print_grammar()
-    print("\n")
-
-    print("Chomsky Normal Form:")
-    chomsky.cfg_to_cnf()
-    chomsky.print_grammar()
-
-main()
